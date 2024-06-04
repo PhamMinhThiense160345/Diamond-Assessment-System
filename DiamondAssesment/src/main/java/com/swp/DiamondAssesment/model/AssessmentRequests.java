@@ -17,7 +17,7 @@ import java.util.List;
 @Builder
 public class AssessmentRequests {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private int totalAmount;
