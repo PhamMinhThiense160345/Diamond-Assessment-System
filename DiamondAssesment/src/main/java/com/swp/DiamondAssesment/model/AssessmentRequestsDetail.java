@@ -13,13 +13,17 @@ import lombok.*;
 @Builder
 public class AssessmentRequestsDetail {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private int sampleSize;
+
     private boolean isDia;
+
     private boolean status;
+
     private boolean isCheckIn;
+
     private int price;
 
     @ManyToOne
