@@ -22,7 +22,6 @@ public class AssessmentRequestsDetail {
 
     private boolean status;
 
-    private boolean isCheckIn;
 
     private int price;
 
