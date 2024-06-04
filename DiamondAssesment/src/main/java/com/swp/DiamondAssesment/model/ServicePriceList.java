@@ -34,5 +34,5 @@ public class ServicePriceList {
     private int initPrice;
 
     @Column(name = "PriceUnit", nullable = false)
-    private int priceUnit;
+    private int priceUnits;
 }
