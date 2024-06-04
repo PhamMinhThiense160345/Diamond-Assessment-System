@@ -19,7 +19,7 @@ import java.util.List;
 @Builder
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(length = 50)
@@ -41,6 +41,8 @@ public class User {
 
     @Column(length = 50)
     private String CCCD;
+
+
     private boolean status;
 
     @ManyToOne
