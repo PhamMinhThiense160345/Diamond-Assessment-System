@@ -25,7 +25,7 @@ public class Assessment {
         private int id;
 
         @Column(name = "isDia")
-        private boolean isDia;
+        private boolean isDiamond;
 
         @OneToOne
         @JoinColumn(name = "DetailID")
