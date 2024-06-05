@@ -10,4 +10,7 @@ public interface assessmentRequestService {
     ResponseEntity<ResponseObject> acceptRequest(int assessmentRequestDetailID);
 
     ResponseEntity<ResponseObject> delegateRequest(int assessmentRequestDetailID, int user_id);
+
+    ResponseEntity<ResponseObject> receiveDelegation(int assessmentRequestDetailID, int managerID);
+
 }
