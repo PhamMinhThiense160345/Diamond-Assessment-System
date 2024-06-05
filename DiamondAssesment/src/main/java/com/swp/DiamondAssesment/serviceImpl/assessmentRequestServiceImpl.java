@@ -81,6 +81,25 @@ public class assessmentRequestServiceImpl implements assessmentRequestService {
         }
     }
 
+    @Override
+    public ResponseEntity<ResponseObject> receiveDelegation(int assessmentRequestDetailID, int managerID) {
+        try {
+            var assessmentRequestDetail = asrDetailRepository.findById(assessmentRequestDetailID).orElse(null);
+            var manager = userRepository.findById(managerID).orElse(null);
+            if (assessmentRequestDetail == null || manager == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseObject("Assessment request detail or manager not found", "Failed", null));
+            }
+            if (!manager.getRole_id().getRoleName().equals("Manager")) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseObject("User is not a Manager", "Failed", null));
+            }
+            assessmentRequestDetail.setByAssessmentID(manager);
+            var savedAsrDetail = asrDetailRepository.save(assessmentRequestDetail);
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("Delegation received", "Success", savedAsrDetail));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseObject(e.getMessage(), "Failed", null));
+        }
+    }
+
     public List<AssessmentRequestsDetail> autoCreateAssessmentDetail(AssessmentRequests req) {
         List<AssessmentRequestsDetail> details = new ArrayList<>();
         int amount = req.getTotalAmount();
