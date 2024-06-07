@@ -15,5 +15,5 @@ public interface assessmentRequestService {
 
     ResponseEntity<ResponseObject> receiveDelegation(int assessmentRequestDetailID, int managerID);
 
-
+    ResponseEntity<ResponseObject> searchRequest(searchRequestDTO searchDTO);
 }
