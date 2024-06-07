@@ -12,5 +12,8 @@ public interface assessmentRequestService {
 
     ResponseEntity<ResponseObject> delegateRequest(int assessmentRequestDetailID, int user_id);
 
-    ResponseEntity<ResponseObject> searchRequest(searchRequestDTO assessmentID);
+
+    ResponseEntity<ResponseObject> receiveDelegation(int assessmentRequestDetailID, int managerID);
+
+
 }
