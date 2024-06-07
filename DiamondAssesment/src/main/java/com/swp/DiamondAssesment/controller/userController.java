@@ -2,6 +2,7 @@ package com.swp.DiamondAssesment.controller;
 
 import com.swp.DiamondAssesment.DTO.ResponseObject;
 import com.swp.DiamondAssesment.DTO.assessmentRequestDTO;
+import com.swp.DiamondAssesment.DTO.searchRequestDTO;
 import com.swp.DiamondAssesment.service.assessmentRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,4 +19,10 @@ public class userController {
             @RequestBody assessmentRequestDTO request) {
         return requestService.createRequest(request);
     }
+
+    @PostMapping("/search")
+    ResponseEntity<ResponseObject> searchRequest(@RequestBody searchRequestDTO searchDTO) {
+        return requestService.searchRequest(searchDTO);
+    }
+
 }

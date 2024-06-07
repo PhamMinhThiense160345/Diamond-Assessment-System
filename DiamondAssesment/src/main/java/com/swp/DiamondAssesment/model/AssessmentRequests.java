@@ -21,6 +21,9 @@ public class AssessmentRequests {
     private int id;
 
     private int totalAmount;
+
+//    private double sampleSize;
+
     private boolean status;
 
     @ManyToOne

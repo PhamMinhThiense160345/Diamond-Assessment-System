@@ -2,11 +2,15 @@ package com.swp.DiamondAssesment.serviceImpl;
 
 import com.swp.DiamondAssesment.DTO.ResponseObject;
 import com.swp.DiamondAssesment.DTO.assessmentRequestDTO;
+import com.swp.DiamondAssesment.DTO.searchRequestDTO;
+import com.swp.DiamondAssesment.model.Assessment;
 import com.swp.DiamondAssesment.model.AssessmentRequests;
 import com.swp.DiamondAssesment.model.AssessmentRequestsDetail;
 import com.swp.DiamondAssesment.repository.*;
 import com.swp.DiamondAssesment.service.assessmentRequestService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,12 +20,13 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class assessmentRequestServiceImpl implements assessmentRequestService {
+ public class assessmentRequestServiceImpl implements assessmentRequestService {
     private final serviceRepository serviceRepository;
     private final paymentRepository payRepository;
     private final userRepository userRepository;
     private final asrRepository asrRepository;
     private final asrDetailRepository asrDetailRepository;
+    private final asRepository asRepository;
 
 
     @Override
@@ -81,6 +86,8 @@ public class assessmentRequestServiceImpl implements assessmentRequestService {
         }
     }
 
+
+
     public List<AssessmentRequestsDetail> autoCreateAssessmentDetail(AssessmentRequests req) {
         List<AssessmentRequestsDetail> details = new ArrayList<>();
         int amount = req.getTotalAmount();
@@ -100,4 +107,24 @@ public class assessmentRequestServiceImpl implements assessmentRequestService {
         }
         return details;
     }
+
+    @Override
+    public ResponseEntity<ResponseObject> searchRequest(searchRequestDTO searchDTO) {
+        try {
+            Specification<Assessment> spec = Specification.where(null);
+
+            if (searchDTO.getAssessmentID() != null) {
+                spec = spec.and((root, query, criteriaBuilder) ->
+                        criteriaBuilder.equal(root.get("id"), searchDTO.getAssessmentID()));
+            }
+            List<Assessment> assessments = asRepository.findAll(spec);
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("Found", "Success", assessments));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseObject(e.getMessage(), "Failed", null));
+        }
+    }
+
 }
+
+
