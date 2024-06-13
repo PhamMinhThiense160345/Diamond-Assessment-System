@@ -2,6 +2,7 @@ package com.swp.DiamondAssesment.serviceImpl;
 
 import com.swp.DiamondAssesment.DTO.ResponseObject;
 import com.swp.DiamondAssesment.DTO.assessmentRequestDTO;
+import com.swp.DiamondAssesment.DTO.inspectParameterDTO;
 import com.swp.DiamondAssesment.DTO.searchRequestDTO;
 import com.swp.DiamondAssesment.model.Assessment;
 import com.swp.DiamondAssesment.model.AssessmentRequests;
@@ -9,7 +10,6 @@ import com.swp.DiamondAssesment.model.AssessmentRequestsDetail;
 import com.swp.DiamondAssesment.repository.*;
 import com.swp.DiamondAssesment.service.assessmentRequestService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -139,6 +139,44 @@ import java.util.List;
             List<Assessment> assessments = asRepository.findAll(spec);
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("Found", "Success", assessments));
 
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseObject(e.getMessage(), "Failed", null));
+        }
+    }
+
+    @Override
+    public ResponseEntity<ResponseObject> saveAssessment(inspectParameterDTO inspectParameterDTO) {
+        try {
+            // dua cac parameter vao trong database
+            Assessment assessment = Assessment.builder()
+                    .isDiamond(inspectParameterDTO.getIsDiamond())
+                    .comments(inspectParameterDTO.getComments())
+                    .depth(inspectParameterDTO.getDepth())
+                    .tablee(inspectParameterDTO.getTablee())
+                    .crowAngle(inspectParameterDTO.getCrowAngle())
+                    .crowHeight(inspectParameterDTO.getCrowHeight())
+                    .pavillionAngle(inspectParameterDTO.getPavillionAngle())
+                    .pavillionDepth(inspectParameterDTO.getPavillionDepth())
+                    .starLength(inspectParameterDTO.getStarLength())
+                    .lowerHalf(inspectParameterDTO.getLowerHalf())
+                    .girdle(inspectParameterDTO.getGirdle())
+                    .caratWeight(inspectParameterDTO.getCaratWeight())
+                    .colorGrade(inspectParameterDTO.getColorGrade())
+                    .clarityGrade(inspectParameterDTO.getClarityGrade())
+                    .cutGrade(inspectParameterDTO.getCutGrade())
+                    .proportions(inspectParameterDTO.getProportions())
+                    .polish(inspectParameterDTO.getPolish())
+                    .symmetry(inspectParameterDTO.getSymmetry())
+                    .flourescence(inspectParameterDTO.getFlourescence())
+                    .measurememt(inspectParameterDTO.getMeasurememt())
+                    .shapeAndCut(inspectParameterDTO.getShapeAndCut())
+                    .dates(inspectParameterDTO.getDates())
+                    .number(inspectParameterDTO.getNumber())
+                    .build();
+
+            Assessment savedAssessment = asRepository.save(assessment);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseObject("Created", "Success", savedAssessment));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseObject(e.getMessage(), "Failed", null));
         }

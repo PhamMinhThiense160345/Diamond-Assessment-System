@@ -14,4 +14,5 @@ public class assessmentRequestDTO {
     private Integer service_id;
     private Integer payment_id;
     private Double sampleSize;
+
 }
