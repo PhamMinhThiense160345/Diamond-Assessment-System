@@ -41,9 +41,8 @@ public class assessmentStaffController {
     @GetMapping(value = "/pdf", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<InputStreamResource> printPDF(@RequestParam int assessmentID) {
         try {
-
             createPdfDTO createPdfDTO = new createPdfDTO();
-            createPdfDTO.getAssessmentID(assessmentID);
+            createPdfDTO.setAssessmentID(assessmentID);
 
             ByteArrayInputStream bis = requestService.createPdf(createPdfDTO);
 

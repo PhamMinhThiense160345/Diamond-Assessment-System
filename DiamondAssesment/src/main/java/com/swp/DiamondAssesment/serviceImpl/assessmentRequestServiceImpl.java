@@ -30,6 +30,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -197,14 +198,17 @@ import java.util.List;
 
     @Override
     public ByteArrayInputStream createPdf(createPdfDTO createPdfDTO) {
-        List<Assessment> assessments = asRepository.findAll();
+        Optional<Assessment> optionalAssessment = asRepository.findById(createPdfDTO.getAssessmentID());
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-        try {
-            com.itextpdf.text.Document document = new Document();
-            PdfWriter.getInstance(document, out);
-            document.open();
-            for (Assessment assessment : assessments) {
+        if (optionalAssessment.isPresent()) {
+            Assessment assessment = optionalAssessment.get();
+
+
+            try {
+                com.itextpdf.text.Document document = new Document();
+                PdfWriter.getInstance(document, out);
+                document.open();
 
                 document.add(new Paragraph("Comments: " + assessment.getComments()));
                 document.add(new Paragraph("Depth: " + assessment.getDepth()));
@@ -229,13 +233,12 @@ import java.util.List;
                 document.add(new Paragraph("Date: " + assessment.getDates()));
                 document.add(new Paragraph("Number: " + assessment.getNumber()));
 
+                document.close();
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-            document.close();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-
         return new ByteArrayInputStream(out.toByteArray());
     }
 

@@ -3,6 +3,7 @@ package com.swp.DiamondAssesment.DTO;
 import java.math.BigDecimal;
 import java.sql.Date;
 import lombok.*;
+import org.springframework.data.relational.core.sql.In;
 
 @Getter
 @Setter
@@ -36,7 +37,4 @@ public class createPdfDTO {
     private Date dates;
     private Integer number;
 
-    public Object getAssessmentID(int assessmentID) {
-        return this.assessmentID;
-    }
 }
