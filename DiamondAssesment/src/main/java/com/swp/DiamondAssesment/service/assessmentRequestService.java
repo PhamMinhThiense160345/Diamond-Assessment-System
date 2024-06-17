@@ -1,12 +1,14 @@
 package com.swp.DiamondAssesment.service;
 
-import com.swp.DiamondAssesment.DTO.ResponseObject;
-import com.swp.DiamondAssesment.DTO.assessmentRequestDTO;
-import com.swp.DiamondAssesment.DTO.inspectParameterDTO;
-import com.swp.DiamondAssesment.DTO.searchRequestDTO;
+import com.swp.DiamondAssesment.DTO.*;
+import com.swp.DiamondAssesment.model.Assessment;
 import org.springframework.http.ResponseEntity;
 
+import java.io.ByteArrayInputStream;
+
 public interface assessmentRequestService {
+
+
 
     ResponseEntity<ResponseObject> createRequest(assessmentRequestDTO assessmentRequestDTO);
 
@@ -20,4 +22,8 @@ public interface assessmentRequestService {
     ResponseEntity<ResponseObject> searchRequest(searchRequestDTO searchDTO);
 
     ResponseEntity<ResponseObject> saveAssessment(inspectParameterDTO inspectParameterDTO);
+
+    ByteArrayInputStream createPdf(createPdfDTO createPdfDTO);
+
+
 }

@@ -1,22 +1,36 @@
 package com.swp.DiamondAssesment.serviceImpl;
 
-import com.swp.DiamondAssesment.DTO.ResponseObject;
-import com.swp.DiamondAssesment.DTO.assessmentRequestDTO;
-import com.swp.DiamondAssesment.DTO.inspectParameterDTO;
-import com.swp.DiamondAssesment.DTO.searchRequestDTO;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfDocument;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.swp.DiamondAssesment.DTO.*;
 import com.swp.DiamondAssesment.model.Assessment;
 import com.swp.DiamondAssesment.model.AssessmentRequests;
 import com.swp.DiamondAssesment.model.AssessmentRequestsDetail;
-import com.swp.DiamondAssesment.repository.*;
 import com.swp.DiamondAssesment.service.assessmentRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import com.swp.DiamondAssesment.DTO.ResponseObject;
+import com.swp.DiamondAssesment.DTO.assessmentRequestDTO;
+import com.swp.DiamondAssesment.DTO.inspectParameterDTO;
+import com.swp.DiamondAssesment.repository.serviceRepository;
+import com.swp.DiamondAssesment.repository.paymentRepository;
+import com.swp.DiamondAssesment.repository.asrRepository;
+import com.swp.DiamondAssesment.repository.asrDetailRepository;
+import com.swp.DiamondAssesment.repository.asRepository;
+import com.swp.DiamondAssesment.repository.userRepository;
 
+
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -180,6 +194,52 @@ import java.util.List;
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseObject(e.getMessage(), "Failed", null));
         }
+    }
+
+    @Override
+    public ByteArrayInputStream createPdf(createPdfDTO createPdfDTO) {
+        Optional<Assessment> optionalAssessment = asRepository.findById(createPdfDTO.getAssessmentID());
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        if (optionalAssessment.isPresent()) {
+            Assessment assessment = optionalAssessment.get();
+
+
+            try {
+                com.itextpdf.text.Document document = new Document();
+                PdfWriter.getInstance(document, out);
+                document.open();
+
+                document.add(new Paragraph("Comments: " + assessment.getComments()));
+                document.add(new Paragraph("Depth: " + assessment.getDepth()));
+                document.add(new Paragraph("Table: " + assessment.getTablee()));
+                document.add(new Paragraph("Crown Angle: " + assessment.getCrowAngle()));
+                document.add(new Paragraph("Crown Height: " + assessment.getCrowHeight()));
+                document.add(new Paragraph("Pavilion Angle: " + assessment.getPavillionAngle()));
+                document.add(new Paragraph("Pavilion Depth: " + assessment.getPavillionDepth()));
+                document.add(new Paragraph("Star Length: " + assessment.getStarLength()));
+                document.add(new Paragraph("Lower Half: " + assessment.getLowerHalf()));
+                document.add(new Paragraph("Girdle: " + assessment.getGirdle()));
+                document.add(new Paragraph("Carat Weight: " + assessment.getCaratWeight()));
+                document.add(new Paragraph("Color Grade: " + assessment.getColorGrade()));
+                document.add(new Paragraph("Clarity Grade: " + assessment.getClarityGrade()));
+                document.add(new Paragraph("Cut Grade: " + assessment.getCutGrade()));
+                document.add(new Paragraph("Proportions: " + assessment.getProportions()));
+                document.add(new Paragraph("Polish: " + assessment.getPolish()));
+                document.add(new Paragraph("Symmetry: " + assessment.getSymmetry()));
+                document.add(new Paragraph("Fluorescence: " + assessment.getFlourescence()));
+                document.add(new Paragraph("Measurement: " + assessment.getMeasurememt()));
+                document.add(new Paragraph("Shape and Cut: " + assessment.getShapeAndCut()));
+                document.add(new Paragraph("Date: " + assessment.getDates()));
+                document.add(new Paragraph("Number: " + assessment.getNumber()));
+
+                document.close();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return new ByteArrayInputStream(out.toByteArray());
     }
 
 }
